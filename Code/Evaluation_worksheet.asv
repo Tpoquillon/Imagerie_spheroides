@@ -16,9 +16,8 @@ c = count_detected_cells(I1, I2)
 % calcule l'indice de Sorenson dice Global pour l'image (idice de
 % superposition)
 sd = GlobalSorenson_Dice(I1, I2)
-%% 
 
- [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(I1, I2)
+[count, precision, sensitivity, av_dice_per_cell] = Count_Dice_cells(I1, I2)
 
 %% Functions 
 function count = count_detected_cells(Iref, Iseg)
@@ -84,7 +83,7 @@ function [count, precision, sensitivity  , av_dice_per_cell] = Count_Dice_cells(
 
 end
 
-function [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(Iref, Iseg)
-    global_dice = GlobalSorenson_Dice(Iref, Iseg);
-    [count, cell_detection_precision, cell_detection_sensitivity, av_dice_per_cell] = Count_Dice_cells(Iref, Iseg);
+function [av_dice_per_cell, global_dice, cell_detection_precision, cell_detection_sensitivity] = Eval(Iref, Iseg)
+    
+
 end
