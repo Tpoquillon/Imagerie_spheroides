@@ -50,3 +50,29 @@ function SD = GlobalSorenson_Dice(Iref, Iseg)
     
 
 end
+
+function count, dice = Count_Dice_cells(Iref, Iseg)
+    count = 0;
+    dice = 0;
+    I_ref_l = bwlabel(Iref,4);
+    I_seg_l = bwlabel(Iseg,4);
+
+    centro_ref = regionprops(I_ref_l,'Centroid');
+    centro_seg = regionprops(I_seg_l,'Centroid');
+
+    M = length(centro_ref);
+
+    for i = 1:M
+        center_ref = flip(round(centro_ref(i).Centroid));
+        v1 = I_seg_l(center_ref(1),center_ref(2));
+        if v1 ~= 0
+            center_seg = flip(round(centro_seg(v1).Centroid));
+            v2 = I_ref_l(center_seg(1),center_seg(2));
+            if v2 == i
+                count = count + 1;
+                
+            end
+        end
+    end
+
+end
