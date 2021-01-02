@@ -4,7 +4,7 @@
 % test on utilise deux images mask de références 
 %(Database1\msk\label_02.tif et Database1\msk\label_07.tif")
 I1 = imread("C:\Users\titou\Documents\5BIM\Imagerie\Projet\Imagerie_spheroides\Database1\msk\label_09.tif");
-I2 = imread("C:\Users\titou\Documents\5BIM\Imagerie\Projet\test4\09_Object Identities.png");
+I2 = imread("C:\Users\titou\Documents\5BIM\Imagerie\Projet\Imagerie_spheroides\Database1\Ilastik\09_Object Identities.png");
 figure
 imshow(I1)
 figure
@@ -17,9 +17,15 @@ c = count_detected_cells(I1, I2)
 % superposition)
 sd = GlobalSorenson_Dice(I1, I2)
 %% 
-
- [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(I1, I2)
-
+ id = ["02","04","07","09","16"];
+ T = table('Size',[5, 5], 'VariableTypes',["string","double","double","double","double"],'VariableNames',[ "Image","Global_dice", "Av_dice_per_cell", "Cell_detection_precision", "Cell_detection_sensitivity"]);
+ for i = 1:5
+    I1 = imread("C:\Users\titou\Documents\5BIM\Imagerie\Projet\Imagerie_spheroides\Database1\msk\label_"+id(i)+".tif");
+    I2 = imread("C:\Users\titou\Documents\5BIM\Imagerie\Projet\Imagerie_spheroides\Database1\Ilastik\"+id(i)+"_Object Identities.png");
+    [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(I1, I2);
+    T(i,:) = array2table([id(i), global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity]);
+ end
+T
 %% Functions 
 function count = count_detected_cells(Iref, Iseg)
     count = 0;
