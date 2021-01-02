@@ -16,7 +16,7 @@ c = count_detected_cells(I1, I2)
 % calcule l'indice de Sorenson dice Global pour l'image (idice de
 % superposition)
 sd = GlobalSorenson_Dice(I1, I2)
-%% 
+%% Ilastick segmentation testing
  id = ["02","04","07","09","16"];
  T = table('Size',[5, 5], 'VariableTypes',["string","double","double","double","double"],'VariableNames',[ "Image","Global_dice", "Av_dice_per_cell", "Cell_detection_precision", "Cell_detection_sensitivity"]);
  for i = 1:5
