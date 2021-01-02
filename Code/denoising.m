@@ -2,7 +2,7 @@ clear all;
 close all;
 
 
-%Remove the noise caused by laser confocal scanning microscopy :
+%Remove the noise caused by laser confocal scanning microscopy 
 
 % Vecteurs contenant les 5 images :
 list_img = dir("../Database1/images/*.tif");
@@ -13,12 +13,10 @@ for j=1:length(list_img)
     image_data{j}=image_file;
 end
 
-
-dir_name = "../Database1/Denoised_images"; % folder name where we'll save detected edges images
+dir_name = "../Database1/Denoised_images"; % folder name where we'll save denoised images
 if ~exist(dir_name, 'dir')
     mkdir(dir_name);
 end
-
 
 for i=1:length(list_img)
     
@@ -81,7 +79,7 @@ for i=1:length(list_img)
     subplot(3,3,6);
     imshow(I_final);
 
-    %seuillage automatique pour binarisation with Otsu threshold 
+    % Otsu's method for automatic image thresholding (binarization)
     [T,EM] = graythresh(I_final);
     I_bw = im2bw(I_final,T);  % binarisation
 
@@ -89,8 +87,6 @@ for i=1:length(list_img)
     subplot(1,3,1);
     imshow(I_cropped);
     title("Original image");
-    
-    
     
     subplot(1,3,2);
     imshow(I_final);
@@ -100,10 +96,8 @@ for i=1:length(list_img)
     imshow(I_bw);
     title("Final denoised and binarized image");
     
-    img_name = strcat(list_img(i).name(1:2), "_denoised.tif")
-    img_name
+    img_name = strcat(list_img(i).name(1:2), "_denoised.tif");
     img_path = strcat("../Database1/Denoised_images/", img_name);
-    img_path
     imwrite(I_bw,img_path);
 
 
