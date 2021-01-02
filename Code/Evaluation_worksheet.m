@@ -2,9 +2,9 @@
 %% test
 % importe une image bianaire ref et une image binaire segmentation (pour ce
 % test on utilise deux images mask de références 
-%(Database1\msk\label_02.tif et Database1\msk\label_04.tif")
-I1 = imread("C:\Users\titou\Documents\5BIM\Imagerie\Projet\Imagerie_spheroides\Database1\msk\label_02.tif");
-I2 = imread("C:\Users\titou\Documents\5BIM\Imagerie\Projet\Imagerie_spheroides\Database1\msk\label_04.tif");
+%(Database1\msk\label_02.tif et Database1\msk\label_07.tif")
+I1 = imread("C:\Users\titou\Documents\5BIM\Imagerie\Projet\Imagerie_spheroides\Database1\msk\label_09.tif");
+I2 = imread("C:\Users\titou\Documents\5BIM\Imagerie\Projet\test4\09_Object Identities.png");
 figure
 imshow(I1)
 figure
