@@ -26,6 +26,7 @@ sd = GlobalSorenson_Dice(I1, I2)
  for i = 1:5
     I1 = imread("..\Database1\msk\label_"+id(i)+".tif");
     I2 = imread("..\Database1\Ilastik\"+id(i)+"_Object Identities.png");
+    c = count_detected_cells(I1, I2)
     [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(I1, I2);
     T1(i,:) = array2table([id(i), global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity]);
  end
@@ -38,12 +39,11 @@ T1
  for i = 1:5
     I1 = imread("..\Database1\msk\label_"+id(i)+".tif");
     I2 = imread("..\Database1\Watershed_segmentation\"+id(i)+"_segmented.tif");
-    imshow(I2)
+    c = count_detected_cells(I1, I2)
     [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(I1, I2);
     T2(i,:) = array2table([id(i), global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity]);
  end
 T2
-c = count_detected_cells(I1, I2)
 %% Functions 
 function count = count_detected_cells(Iref, Iseg)
     count = 0;
