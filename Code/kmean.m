@@ -1,3 +1,6 @@
+clear all;
+close all;
+
 I = imread("../Database1/images/02.tif");
 J= histeq(I);
 K = adapthisteq(I);
