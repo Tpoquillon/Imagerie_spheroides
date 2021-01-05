@@ -22,7 +22,7 @@ for i=1:length(list_img)
     
     I = image_data{i};
 
-   
+
     % Remove black margins (crop the image) 
     I_copy = I;
     I_copy(I<15) = 0;
@@ -34,13 +34,13 @@ for i=1:length(list_img)
     col2 = max(c);
     I_cropped = I(row1:row2, col1:col2);
     [M, N]=size(I_cropped);
-
-
+    
     fig1 = figure
     subplot(1,2,1);
     imshow(I);
     subplot(1,2,2);
-    imshow(I_cropped);
+    imshow(I_cropped)
+    
 
     % Opening - Closing reconstruction : 
     gmag = imgradient(I_cropped);
@@ -83,9 +83,13 @@ for i=1:length(list_img)
     [T,EM] = graythresh(I_final);
     I_bw = im2bw(I_final,T);  % binarisation
 
+    % We put back black paddings
+    I_bw2 = zeros(401);
+    I_bw2(row1:row2, col1:col2) = I_bw;
+
     fig3 = figure;
     subplot(1,3,1);
-    imshow(I_cropped);
+    imshow(I);
     title("Original image");
     
     subplot(1,3,2);
@@ -93,12 +97,12 @@ for i=1:length(list_img)
     title("Image after Opening-Closing by Reconstruction");
     
     subplot(1,3,3);
-    imshow(I_bw);
+    imshow(I_bw2);
     title("Final denoised and binarized image");
     
     img_name = strcat(list_img(i).name(1:2), "_denoised.tif");
     img_path = strcat("../Database1/Denoised_images/", img_name);
-    imwrite(I_bw,img_path);
+    imwrite(I_bw2,img_path);
 
 
 end
