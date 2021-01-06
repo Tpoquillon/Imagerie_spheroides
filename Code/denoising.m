@@ -1,7 +1,6 @@
 clear all;
 close all;
 
-
 %Remove the noise caused by laser confocal scanning microscopy 
 
 % Vecteurs contenant les 5 images :
@@ -22,11 +21,9 @@ for i=1:length(list_img)
     
     I = image_data{i};
 
-
     % Remove black margins (crop the image) 
     I_copy = I;
     I_copy(I<15) = 0;
-
     [r, c] = find(I_copy);
     row1 = min(r);
     row2 = max(r);
@@ -35,13 +32,13 @@ for i=1:length(list_img)
     I_cropped = I(row1:row2, col1:col2);
     [M, N]=size(I_cropped);
     
+    
     fig1 = figure
     subplot(1,2,1);
     imshow(I);
     subplot(1,2,2);
     imshow(I_cropped)
     
-
     % Opening - Closing reconstruction : 
     gmag = imgradient(I_cropped);
     fig2 = figure
@@ -73,7 +70,6 @@ for i=1:length(list_img)
     imshow(Iobrcbr);
     title('Opening-Closing by Reconstruction')
 
-
     % Contrast Enhancement
     I_final  =  adapthisteq(Iobrcbr);
     subplot(3,3,6);
@@ -83,14 +79,14 @@ for i=1:length(list_img)
     T = adaptthresh(I_final, 0.45);
     I_bw = imbinarize(I_final,T);
     
-    
-    I_bw = bwareaopen(I_bw,125);
-
+    I_bw = bwareaopen(I_bw,125); % Delete false cells (<125 pixels)
 
     % We put back black paddings
     I_bw2 = zeros(401);
     I_bw2(row1:row2, col1:col2) = I_bw;
 
+    
+    % Show the results 
     fig3 = figure;
     subplot(1,3,1);
     imshow(I);
