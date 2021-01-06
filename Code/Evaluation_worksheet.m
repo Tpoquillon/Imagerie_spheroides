@@ -51,23 +51,24 @@ writetable(T3,"..\Evaluation\Region_growing_segmentation_evaluation.csv")
  end
 T4
 writetable(T4,"..\Evaluation\K_mean_segmentation_evaluation.csv")
+
 %% test eval
-% importe une image bianaire ref et une image binaire segmentation (pour ce
-% test on utilise deux images mask de références 
-%(Database1\msk\label_02.tif et Database1\msk\label_07.tif")
-I1 = imread("..\Database1\msk\label_09.tif");
-I2 = imread("..\Database1\Ilastik\09_Object Identities.png");
-figure
-imshow(I1)
-figure
-imshow(I2)
-figure
-imshow(I1.*I2)
-% compte le nombre d'objet corectement détecté par l'algorithme 
-c = count_detected_cells(I1, I2)
-% calcule l'indice de Sorenson dice Global pour l'image (idice de
-% superposition)
-sd = GlobalSorenson_Dice(I1, I2)
+% % importe une image bianaire ref et une image binaire segmentation (pour ce
+% % test on utilise deux images mask de références 
+% %(Database1\msk\label_02.tif et Database1\msk\label_07.tif")
+% %{I1 = imread("..\Database1\msk\label_09.tif");
+% I2 = imread("..\Database1\Ilastik\09_Object Identities.png");
+% figure
+% imshow(I1)
+% figure
+% imshow(I2)
+% figure
+% imshow(I1.*I2)
+% % compte le nombre d'objet corectement détecté par l'algorithme 
+% c = count_detected_cells(I1, I2)
+% % calcule l'indice de Sorenson dice Global pour l'image (idice de
+% % superposition)
+% sd = GlobalSorenson_Dice(I1, I2)
 
 %% Test 3dcount++
 id = ["02","04","07","09","16"];

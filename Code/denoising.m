@@ -79,9 +79,13 @@ for i=1:length(list_img)
     subplot(3,3,6);
     imshow(I_final);
 
-    % Otsu's method for automatic image thresholding (binarization)
-    [T,EM] = graythresh(I_final);
-    I_bw = im2bw(I_final,T);  % binarisation
+    %adaptive local thresholding
+    T = adaptthresh(I_final, 0.45);
+    I_bw = imbinarize(I_final,T);
+    
+    
+    I_bw = bwareaopen(I_bw,125);
+
 
     % We put back black paddings
     I_bw2 = zeros(401);
