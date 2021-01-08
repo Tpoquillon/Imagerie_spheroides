@@ -25,6 +25,8 @@ Une étape de débruitage était indispensable avant la segmentation et comme ch
 
 **Count_Cell_3d.m** : script Matlab pour conter le nombre de cellule présente dans une image 3d
 
+**region_growing.m** : script matlab pour la segmentation utilisant la méthode region growing. Le script génère une segmentation à partir des images contenues dans Database1 et places les images segmentées dans le dossier Database1/region_growing.
+
 
 
 ### Dossier Database 1
