@@ -13,13 +13,15 @@ Baptiste Alberti - Tanguy Pace - Titouan Poquillon - Pierrick Ullius
 Ce dossier contient l'ensemble des fichier de code Matlab et des logiciels Ilastik qui ont permis de réaliser les différentes étapes de notre projet de segmentation.
 Une étape de débruitage était indispensable avant la segmentation et comme chaque méthode de segmentation devait faire appelle aux mêmes images débruitées, nous avons créé un script de débruitage externe à la segmentation.
 
+**denoising.m** : Script permettant d'effectuer le pré-traitement (débruitage et binarisation) des 5 images 2D de la database 1. Des images intermédiaires relatives au différentes transformations sont affichées, et les images finales sont sauvergardés dans le dossier Database1/Denoised_images/.
+
+**denoising_3d.m** : script équivalent à *denoising.m* pour une image 3d
+
 **kmean.m** : script pour la segmentation par kmean des 5 images débruitées de la database 1. Le script propose des images supplémentaires afin d'afficher les différents clusters et centroïdes en plus de l'image binaire utilisée pour l'évaluation de la méthode.
 
 **Evaluation_worksheet.m** : script Matlab pour évaluer les performance de chaque méthode de segmentation par rapport à la vérité terrain
 
 **Ilastik_cell_detection.ilp **: fichier Ilastik de segmentation des coupes 2d de sphéroïdes
-
-**denoising_3d.m** : script équivalent à *denoising.m* pour une image 3d
 
 **Ilastik_3d_cell_detection.ilp **: Fichier Ilastik de segmentation 3d complète des sphéroïdes
 
