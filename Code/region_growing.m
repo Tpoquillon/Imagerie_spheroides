@@ -2,7 +2,7 @@ clear all;
 close all;
 
 
-% Vecteurs contenant les 5 images débruitées et binarisées :
+% Vecteurs contenant les 5 images binarisées :
 list_img = dir("../Database1/images/*.tif");
 image_data= cell(1,length(list_img));
 for j=1:length(list_img)
@@ -11,21 +11,21 @@ for j=1:length(list_img)
     image_data{j}=image_file;
 end
 
-dir_name = "../Database1/region_growing"; % folder name where we'll save denoised images
+dir_name = "../Database1/region_growing"; % dossier de sauvegarde des images 
 if ~exist(dir_name, 'dir')
     mkdir(dir_name);
 end
 
-for i=1:length(list_img)
+for i=1:length(list_img) 
     
-I = image_data{i}; 
+I = image_data{i}; %Chargement image
 %subplot(1,2,1);
 imshow(I)
 
-mask = zeros(size(I));
+mask = zeros(size(I)); % Création de la bordure nécessaire à la  méthode de la segmentation
 mask(25:end-25,25:end-25) = 1;
 
-bw = activecontour(I,mask,10000);
+bw = activecontour(I,mask,10000); % Segmentation
 %subplot(1,2,2);
 imshow(bw)
 
@@ -42,6 +42,6 @@ M_eccentricity = mean([stats.Eccentricity]);  % moyenne des circularite ( 0 = ci
 M_perimeter = mean([stats.Perimeter]);  % moyenne des perime
 
 img_name = strcat(list_img(i).name(1:2), "_segmented.tif");
-img_path = strcat("../Database1/region_growing/", img_name);
+img_path = strcat("../Database1/region_growing/", img_name); % Création des images de segmentation
 imwrite(bw,img_path);
 end
