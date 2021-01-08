@@ -1,0 +1,57 @@
+clear all;
+close all;
+%% Counting the number of cells in the spheroide segmentation (reference)
+tiff_info = imfinfo("..\Database2\Seg_map.tif");
+n_slices = size(tiff_info, 1);
+slices = cell(n_slices,1);
+for i = 1 : n_slices
+slices{i} = imread("..\Database2\Seg_map.tif",i);
+end
+[count, maximum] = Count_cell_slices(slices)
+%% Counting the number of cells in the spheroide Ilastik segmentation 
+tiff_info = imfinfo("..\Database2\Ilastik Segmentation.tiff");
+n_slices = size(tiff_info, 1);
+slices = cell(n_slices,1);
+for i = 1 : n_slices
+slices{i} = imread("..\Database2\Ilastik Segmentation.tiff",i);
+end
+[count, maximum] = Count_cell_slices(slices)
+
+
+%% Function
+%Count the number of time two slicew from two image belong to the same cell
+function count = count_common_cells(Iref, Iseg)
+    count = 0;
+    I_ref_l = bwlabel(Iref,4);
+    I_seg_l = bwlabel(Iseg,4);
+
+    centro_ref = regionprops(I_ref_l,'Centroid');
+    centro_seg = regionprops(I_seg_l,'Centroid');
+
+    M = length(centro_ref);
+
+    for i = 1:M
+        center_ref = flip(round(centro_ref(i).Centroid));
+        v1 = I_seg_l(center_ref(1),center_ref(2));
+        if v1 ~= 0
+            center_seg = flip(round(centro_seg(v1).Centroid));
+            v2 = I_ref_l(center_seg(1),center_seg(2));
+            if v2 == i
+                count = count + 1;
+            end
+        end
+    end
+
+end
+%
+function [count, maximum] = Count_cell_slices(slices)
+    sum_cell = 0;
+    for i = 1:length(slices)
+        sum_cell = sum_cell + max(bwlabel(slices{i}),[],"all");
+    end
+    maximum = sum_cell;
+    for i = 1:length(slices)-1
+        sum_cell = sum_cell - count_common_cells(slices{i}, slices{i+1});
+    end
+    count = sum_cell;
+end

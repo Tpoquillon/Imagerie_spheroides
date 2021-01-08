@@ -15,6 +15,16 @@ Une étape de débruitage était indispensable avant la segmentation et comme ch
 
 **kmean.m** : script pour la segmentation par kmean des 5 images débruitées de la database 1. Le script propose des images supplémentaires afin d'afficher les différents clusters et centroïdes en plus de l'image binaire utilisée pour l'évaluation de la méthode.
 
+**Evaluation_worksheet.m** : script Matlab pour évaluer les performance de chaque méthode de segmentation par rapport à la vérité terrain
+
+**Ilastik_cell_detection.ilp **: fichier Ilastik de segmentation des coupes 2d de sphéroïdes
+
+**denoising_3d.m** : script équivalent à *denoising.m* pour une image 3d
+
+**Ilastik_3d_cell_detection.ilp **: Fichier Ilastik de segmentation 3d complète des sphéroïdes
+
+**Count_Cell_3d.m** : script Matlab pour conter le nombre de cellule présente dans une image 3d
+
 
 
 ### Dossier Database 1
@@ -31,10 +41,13 @@ Ce dossier contient les images, les masques et les segmentions relative à la pr
 
 ### Dossier Database 2 
 
-Ce dossier contient l'images et le masque d'un sphéroïde complet. 
+Ce dossier contient l'images, le masque et les images de segmentation d'un sphéroïde complet. 
 
 - **Raw.tif**: L'image 3d original
 - **Seg_map.tif**: la verrité terrain obtenu par deep learning
+- **Denoised.tif**: l'image 3d débruitée
+- **Ilastik Segmentation.tiff**: la segmentation 3d Ilastik
+- **Label.h5**: les lables manuelement dessiné pour entrainer Ilastik
 
 ### Dossier Evaluation
 

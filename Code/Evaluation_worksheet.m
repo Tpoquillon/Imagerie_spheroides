@@ -8,7 +8,6 @@ close all;
  for i = 1:5
     I1 = imread("..\Database1\msk\label_"+id(i)+".tif");
     I2 = imread("..\Database1\Ilastik\"+id(i)+"_Object Identities.png");
-    c = count_detected_cells(I1, I2);
     [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(I1, I2);
     T1(i,:) = array2table([id(i), global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity]);
  end
@@ -21,7 +20,6 @@ writetable(T1,"..\Evaluation\Ilastik_segmentation_evaluation.csv")
  for i = 1:5
     I1 = imread("..\Database1\msk\label_"+id(i)+".tif");
     I2 = imread("..\Database1\Watershed_segmentation\"+id(i)+"_segmented.tif");
-    c = count_detected_cells(I1, I2);
     [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(I1, I2);
     T2(i,:) = array2table([id(i), global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity]);
  end
@@ -33,7 +31,6 @@ writetable(T2,"..\Evaluation\Watershed_segmentation_evaluation.csv")
  for i = 1:5
     I1 = imread("..\Database1\msk\label_"+id(i)+".tif");
     I2 = imread("..\Database1\region_growing\"+id(i)+"_segmented.tif");
-    c = count_detected_cells(I1, I2);
     [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(I1, I2);
     T3(i,:) = array2table([id(i), global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity]);
  end
@@ -45,7 +42,6 @@ writetable(T3,"..\Evaluation\Region_growing_segmentation_evaluation.csv")
  for i = 1:5
     I1 = imread("..\Database1\msk\label_"+id(i)+".tif");
     I2 = imread("..\Database1\Kmean_segmentation\"+id(i)+"_segmented.tif");
-    c = count_detected_cells(I1, I2);
     [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(I1, I2);
     T4(i,:) = array2table([id(i), global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity]);
  end
@@ -70,59 +66,47 @@ writetable(T4,"..\Evaluation\K_mean_segmentation_evaluation.csv")
 % % superposition)
 % sd = GlobalSorenson_Dice(I1, I2)
 
-%% Test 3dcount++
-id = ["02","04","07","09","16"];
-slices = cell(5,1);
-for i = 1:5
-    slices{i}= imread("..\Database1\Ilastik\"+id(i)+"_Object Identities.png");
-end
-[count, maximum] = Count_cell_slices(slices)
+
 
 %% Functions 
-function count = count_detected_cells(Iref, Iseg)
-    count = 0;
-    I_ref_l = bwlabel(Iref,4);
-    I_seg_l = bwlabel(Iseg,4);
 
-    centro_ref = regionprops(I_ref_l,'Centroid');
-    centro_seg = regionprops(I_seg_l,'Centroid');
-
-    M = length(centro_ref);
-
-    for i = 1:M
-        center_ref = flip(round(centro_ref(i).Centroid));
-        v1 = I_seg_l(center_ref(1),center_ref(2));
-        if v1 ~= 0
-            center_seg = flip(round(centro_seg(v1).Centroid));
-            v2 = I_ref_l(center_seg(1),center_seg(2));
-            if v2 == i
-                count = count + 1;
-            end
-        end
-    end
-
-end
-
+%Calcule l'indice de Sorenson Dice entre deux images
 function SD = GlobalSorenson_Dice(Iref, Iseg)
+    %binarise les images
     p_ref = Iref~=0;
     p_seg = Iseg~=0;
+    
+    %Calcule le SD
     TP = p_ref.*p_seg;
     SD = 2*sum(TP,"all")/(sum(p_ref,"all")+sum(p_seg,"all"));
     
 
 end
 
+%Evalue la qualité de détéction des cellules en tant qu'ensemble de pixels
+%Retourne un SD moyen par cellule, la précision de la détéction de cellule
+% et la sensibilité.
 function [count, precision, sensitivity  , av_dice_per_cell] = Count_Dice_cells(Iref, Iseg)
     count = 0;
     dice_sum = 0;
+    
+    %Atribut à chaque pixel un label en fonction de la cellule 
+    %auquel il appartient
     I_ref_l = bwlabel(Iref,4);
     I_seg_l = bwlabel(Iseg,4);
-
+    
+    % Trouve la position des centroides des cellules
     centro_ref = regionprops(I_ref_l,'Centroid');
     centro_seg = regionprops(I_seg_l,'Centroid');
 
     M = length(centro_ref);
-    N = length(centro_seg); 
+    N = length(centro_seg);
+    
+    %Pour chaque cellule de la verrité terrain verrifie si son centroide 
+    %est situé dans un cellule de la segmentation et si la réciproque est
+    %vrais. Le cas échéant, conte la cellule comme détecté et calcule un SD
+    %pour évaluer la qualité de la superposition des pixels de la cellule
+    %de la segmentation et celle de la verrité terrain
     for i = 1:M
         center_ref = flip(round(centro_ref(i).Centroid));
         v1 = I_seg_l(center_ref(1),center_ref(2));
@@ -136,25 +120,17 @@ function [count, precision, sensitivity  , av_dice_per_cell] = Count_Dice_cells(
             end
         end
     end
+    
+    %Calcules de la précision, la sensibilité et le SD moyen dans la
+    %détéction de cellules.
     precision = count/N;
     sensitivity = count/M;
     av_dice_per_cell = dice_sum/count;
 
 end
 
+%Réalise les deux fonction si dessus et renvoie leur résultats.
 function [ global_dice, av_dice_per_cell, cell_detection_precision, cell_detection_sensitivity] = Eval(Iref, Iseg)
     global_dice = GlobalSorenson_Dice(Iref, Iseg);
     [count, cell_detection_precision, cell_detection_sensitivity, av_dice_per_cell] = Count_Dice_cells(Iref, Iseg);
-end
-
-function [count, maximum] = Count_cell_slices(slices)
-sum_cell = 0;
-for i = 1:length(slices)
-    sum_cell = sum_cell + max(bwlabel(slices{i}),[],"all");
-end
-maximum = sum_cell;
-for i = 1:length(slices)-1
-    sum_cell = sum_cell - 2*count_detected_cells(slices{i}, slices{i+1});
-end
-count = sum_cell;
 end
