@@ -1,4 +1,6 @@
 # Imagerie sphéroïdes
+## Projet 6 - Segmentation de sphéroïdes tumoraux multicellulaires
+Baptiste Alberti - Tanguy Pace - Titouan Poquillon - Pierrick Ullius
 
 
 
@@ -8,7 +10,10 @@
 
 ### Dossier Code
 
-Ce dossier contient l'ensemble des fichier de code Matlab et des logiciels Ilastik qui ont permis de réaliser les différentes étapes de notre projet de segmentation
+Ce dossier contient l'ensemble des fichier de code Matlab et des logiciels Ilastik qui ont permis de réaliser les différentes étapes de notre projet de segmentation.
+Une étape de débruitage était indispensable avant la segmentation et comme chaque méthode de segmentation devait faire appelle aux mêmes images débruitées, nous avons créé un script de débruitage externe à la segmentation.
+
+**kmean.m** : script pour la segmentation par kmean des 5 images débruitées de la database 1. Le script propose des images supplémentaires afin d'afficher les différents clusters et centroïdes en plus de l'image binaire utilisée pour l'évaluation de la méthode.
 
 
 

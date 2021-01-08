@@ -39,10 +39,12 @@ for i=1:length(list_img)
     subplot(1,2,1),imshow(map1);
     subplot(1,2,2),imshow(map2);
 
+    % Affichage des centromères
     mask = imextendedmin(D,2);
     figure,imshowpair(I_bw2,mask,'blend');
     sgtitle('Affichage des centromères');
     
+    % Sauvegarde du cluster de cellule comme image binaire
     img_name = strcat(list_img(i).name(1:2), "_segmented.tif");
     img_path = strcat("../Database1/Kmean_segmentation/", img_name);
     imwrite(map2,img_path);
